@@ -1,6 +1,6 @@
 import { renderForm, renderFormPage } from "../src/index";
 import { getMeta } from "../src/metastore";
-import { Book } from "./book.sample";
+import { Book } from "./book.model";
 
 describe("form metadata", () => {
   it("should give the fields count", () => {
