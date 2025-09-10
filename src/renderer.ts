@@ -10,19 +10,64 @@ export function renderForm(cls: any): string {
   const meta = getMeta(cls);
   if (!meta) throw new Error("Class not decorated with @FormEntity");
 
+  const renderField = (f: any): string => {
+    switch (f.type) {
+      case "textarea":
+        return `
+          <div class="mb-3">
+            <label class="form-label">${f.label}</label>
+            <textarea class="form-control" name="${f.propertyKey}"></textarea>
+          </div>
+        `;
+      case "select":
+        const options =
+          f.options
+            ?.map((opt: string) => `<option value="${opt}">${opt}</option>`)
+            .join("") ?? "";
+        return `
+          <div class="mb-3">
+            <label class="form-label">${f.label}</label>
+            <select class="form-select" name="${f.propertyKey}">
+              ${options}
+            </select>
+          </div>
+        `;
+      case "checkbox":
+        return `
+          <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="${f.propertyKey}" name="${f.propertyKey}">
+            <label class="form-check-label" for="${f.propertyKey}">${f.label}</label>
+          </div>
+        `;
+      case "radio":
+        return (
+          f.options
+            ?.map(
+              (opt: string) => `
+          <div class="form-check mb-3">
+            <input type="radio" class="form-check-input" name="${f.propertyKey}" id="${f.propertyKey}-${opt}" value="${opt}">
+            <label class="form-check-label" for="${f.propertyKey}-${opt}">${opt}</label>
+          </div>
+        `
+            )
+            .join("") ?? ""
+        );
+      default:
+        return `
+          <div class="mb-3">
+            <label class="form-label">${f.label}</label>
+            <input class="form-control" type="${f.type}" name="${f.propertyKey}" />
+          </div>
+        `;
+    }
+  };
+
+  const fieldsHtml = meta.fields.map(renderField).join("\n");
+
   return `
     <h1>${meta.title}</h1>
     <form class="p-3">
-      ${meta.fields
-        .map(
-          (f) => `
-        <div class="mb-3">
-          <label class="form-label">${f.label}</label>
-          <input class="form-control" type="${f.type}" name="${f.propertyKey}" />
-        </div>
-      `
-        )
-        .join("")}
+      ${fieldsHtml}
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   `;

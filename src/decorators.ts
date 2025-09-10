@@ -1,5 +1,26 @@
 import { registerClass, registerField } from "./metastore";
 
+export type Html5InputType =
+  | "text"
+  | "number"
+  | "email"
+  | "password"
+  | "url"
+  | "tel"
+  | "search"
+  | "date"
+  | "time"
+  | "datetime-local"
+  | "month"
+  | "week"
+  | "color"
+  | "checkbox"
+  | "radio"
+  | "file"
+  | "range"
+  | "textarea"
+  | "select";
+
 /**
  * Class decorator to mark a class as a form entity.
  * @param options Optional settings like title
@@ -16,7 +37,11 @@ export function FormEntity(options?: { title?: string }) {
  * @param options Field options like label and type
  * @returns Property decorator function
  */
-export function FormField(options: { label: string; type: string }) {
+export function FormField(options: {
+  label: string;
+  type: Html5InputType;
+  options?: string[];
+}) {
   return function (target: any, propertyKey: string) {
     registerField(target.constructor, { propertyKey, ...options });
   };
