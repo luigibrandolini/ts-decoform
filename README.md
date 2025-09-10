@@ -2,7 +2,7 @@
 
 A TypeScript library that uses **decorators** to automatically generate HTML forms based on domain classes, with built-in support for **Bootstrap 5**.
 
-## Features
+**Features**:
 
 - @FormEntity and @FormField decorators
 
@@ -13,8 +13,6 @@ A TypeScript library that uses **decorators** to automatically generate HTML for
 - Jest test support
 
 - API to retrieve class metadata (getMeta)
-
----
 
 ## Installation
 
